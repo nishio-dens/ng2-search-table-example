@@ -54,7 +54,8 @@ System.config({
     '@angular': 'vendor/@angular',
     'rxjs': 'vendor/rxjs',
     'main': 'main.js',
-    'ng2-search-table': 'vendor/ng2-search-table'
+    'ng2-search-table': 'vendor/ng2-search-table',
+    'ng2-paginator': 'vendor/ng2-paginator/index.js'
   },
   packages: cliSystemConfigPackages
 });

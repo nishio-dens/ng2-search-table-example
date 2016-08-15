@@ -9,6 +9,8 @@ gem 'kaminari'
 gem 'convergence'
 gem 'puma'
 gem 'rack-cors', require: 'rack/cors'
+gem 'ransack'
+gem 'kaminari'
 
 group :development do
   gem 'spring'

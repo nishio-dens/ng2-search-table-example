@@ -5,3 +5,11 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+# Dummy Inventories
+(1..500).each do |index|
+  Inventory.find_or_initialize_by(id: index).tap do |inv|
+    inv.name = "Dummy Product #{index}"
+    inv.price = 10 * index
+  end.save!
+end

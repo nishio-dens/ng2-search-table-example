@@ -1,3 +1,12 @@
+create_table :inventories, default_charset: :utf8mb4, collate: :utf8mb4_general_ci, auto_increment: 1000, row_format: :dynamic do |t|
+  t.int :id, primary_key: true, extra: :auto_increment
+  t.varchar :name, comment: "InventoryName"
+  t.int :price
+
+  t.datetime :created_at
+  t.datetime :updated_at
+end
+
 create_table 'schema_migrations', collate: 'utf8_bin' do |t|
   t.varchar 'version'
 
