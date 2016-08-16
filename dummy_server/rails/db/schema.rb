@@ -13,10 +13,11 @@
 ActiveRecord::Schema.define(version: 0) do
 
   create_table "inventories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC" do |t|
-    t.string   "name",       null: false, comment: "InventoryName"
-    t.integer  "price",      null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "status",     default: "inactive", null: false
+    t.string   "name",                            null: false, comment: "InventoryName"
+    t.integer  "price",                           null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
 end

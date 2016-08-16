@@ -3,6 +3,7 @@
 # Table name: inventories
 #
 #  id         :integer          not null, primary key
+#  status     :string(255)      default("inactive"), not null
 #  name       :string(255)      not null
 #  price      :integer          not null
 #  created_at :datetime         not null
@@ -14,6 +15,7 @@ class Inventory < ApplicationRecord
 
   RANSACK_FILTER_ATTRIBUTES = {
     id: :id_eq_any,
+    status: :status_eq,
     name: :name_has_all_term,
     price: :price_eq
   }.with_indifferent_access.freeze

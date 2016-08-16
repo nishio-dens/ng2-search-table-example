@@ -10,6 +10,7 @@
 (1..500).each do |index|
   Inventory.find_or_initialize_by(id: index).tap do |inv|
     inv.name = "Dummy Product #{index}"
+    inv.status = index % 10 == 0 ? "inactive" : "active"
     inv.price = 10 * index
   end.save!
 end

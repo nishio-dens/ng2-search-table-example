@@ -1,5 +1,6 @@
 create_table :inventories, default_charset: :utf8mb4, collate: :utf8mb4_general_ci, auto_increment: 1000, row_format: :dynamic do |t|
   t.int :id, primary_key: true, extra: :auto_increment
+  t.varchar :status, default: "inactive"
   t.varchar :name, comment: "InventoryName"
   t.int :price
 
