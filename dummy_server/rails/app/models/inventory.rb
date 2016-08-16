@@ -17,6 +17,7 @@ class Inventory < ApplicationRecord
     id: :id_eq_any,
     status: :status_eq,
     name: :name_has_all_term,
-    price: :price_eq
+    priceFrom: :price_gteq,
+    priceTo: :price_lteq,
   }.with_indifferent_access.freeze
 end

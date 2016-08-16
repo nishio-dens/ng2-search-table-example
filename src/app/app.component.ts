@@ -5,6 +5,7 @@ import {SimpleHeaderComponent} from "ng2-search-table/components/header/simple-h
 import {SortableHeaderComponent} from "ng2-search-table/components/header/sortable-header.component";
 import {TextFilterComponent} from "ng2-search-table/components/table-filter/text-filter.component";
 import {SelectFilterComponent} from "ng2-search-table/components/table-filter/select-filter.component";
+import {FromToTextFilterComponent} from "ng2-search-table/components/table-filter/from-to-text-filter.component";
 
 @Component({
   moduleId: module.id,
@@ -76,9 +77,21 @@ export class AppComponent implements OnInit {
       },
       {
         name: "price",
-        model: {displayName: "Price"},
+        model: {
+          displayName: "Price",
+          multipleFilter: [
+            {
+              name: "priceFrom",
+              placeholder: "From"
+            },
+            {
+              name: "priceTo",
+              placeholder: "To"
+            }
+          ]
+        },
         headerComponent: SimpleHeaderComponent,
-        filterComponent: TextFilterComponent
+        filterComponent: FromToTextFilterComponent
       },
     ];
   }
