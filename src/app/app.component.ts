@@ -19,12 +19,34 @@ import {FromToTextFilterComponent} from "ng2-search-table/ng2-search-table";
 
   <div class="row">
   <div class="col-xs-12">
-  <div class="col-xs-6">
+  <div class="col-xs-9">
     <button (click)="resetSearchCondition()" class="btn btn-default">
       Reset Search Condition
     </button>
+
+
+    <label class="checkbox-inline">
+      <input type="checkbox" [(ngModel)]="showId"
+             (ngModelChange)="toggleShowHide('id', $event)">
+      Id
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" [(ngModel)]="showStatus"
+             (ngModelChange)="toggleShowHide('status', $event)">
+      Status
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" [(ngModel)]="showName"
+             (ngModelChange)="toggleShowHide('name', $event)">
+      Name
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" [(ngModel)]="showPrice"
+             (ngModelChange)="toggleShowHide('price', $event)">
+      Price
+    </label>
   </div>
-  <div class="col-xs-6 text-right form-inline">
+  <div class="col-xs-3 text-right form-inline">
     <label>Items per page:</label>
     <select class="form-control input-sm"
       [(ngModel)]="currentPagePer"
@@ -42,13 +64,13 @@ import {FromToTextFilterComponent} from "ng2-search-table/ng2-search-table";
     <search-table #searchTable [tableClass]="'table table-condensed table-responsive table-hover'"
                   [columns]="headerComponents" [config]="searchTableConfig">
       <tr *ngFor="let row of searchTable.dataRows">
-        <td>{{row.id}}</td>
-        <td>
+        <td [hidden]="!showId">{{row.id}}</td>
+        <td [hidden]="!showStatus">
           <label class="label label-danger" *ngIf="row.status == 'inactive'">Inactive</label>
           <label class="label label-success" *ngIf="row.status == 'active'">Active</label>
         </td>
-        <td>{{row.name}}</td>
-        <td>{{row.price}}</td>
+        <td [hidden]="!showName">{{row.name}}</td>
+        <td [hidden]="!showPrice">{{row.price}}</td>
       </tr>
     </search-table>
 
@@ -126,8 +148,15 @@ export class AppComponent implements OnInit {
     },
   ];
 
+  showId: boolean = true;
+  showStatus: boolean = true;
+  showName: boolean = true;
+  showPrice: boolean = true;
+
   ngOnInit() {
     this.searchTable.setSortDirection("id", "asc");
+    this.showStatus = false;
+    this.searchTable.setVisibility("status", false);
   }
 
   onChangePagePer(per: number) {
@@ -148,5 +177,10 @@ export class AppComponent implements OnInit {
     this.searchTable.setFilterValue("price", "", "priceFrom");
     this.searchTable.setFilterValue("price", "", "priceTo");
     this.searchTable.search();
+  }
+
+  toggleShowHide(name: string, visible: boolean): void {
+    this.searchTable.setVisibility(name, visible);
+    console.log(name + " visible: " + visible);
   }
 }
