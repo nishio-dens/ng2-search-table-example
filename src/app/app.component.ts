@@ -1,22 +1,46 @@
 import {OnInit, Component, ViewChild} from "@angular/core";
 import {Paginator} from "ng2-paginator";
-import {SearchTableComponent} from "ng2-search-table/components/search-table.component";
-import {SimpleHeaderComponent} from "ng2-search-table/components/header/simple-header.component";
-import {SortableHeaderComponent} from "ng2-search-table/components/header/sortable-header.component";
-import {TextFilterComponent} from "ng2-search-table/components/table-filter/text-filter.component";
-import {SelectFilterComponent} from "ng2-search-table/components/table-filter/select-filter.component";
-import {FromToTextFilterComponent} from "ng2-search-table/components/table-filter/from-to-text-filter.component";
+import {SearchTableComponent} from "ng2-search-table/ng2-search-table";
+import {SimpleHeaderComponent} from "ng2-search-table/ng2-search-table";
+import {SortableHeaderComponent} from "ng2-search-table/ng2-search-table";
+import {TextFilterComponent} from "ng2-search-table/ng2-search-table";
+import {SelectFilterComponent} from "ng2-search-table/ng2-search-table";
+import {FromToTextFilterComponent} from "ng2-search-table/ng2-search-table";
 
 @Component({
   moduleId: module.id,
   selector: "app-root",
   directives: [Paginator], // FIXME: deprecated
   template: `
-  <div class="container"><div class="row">
+  <div class="container">
   <h3>SimpleSearchTable Example</h3>
+
+  <hr>
+
+  <div class="row">
+  <div class="col-xs-12">
+  <div class="col-xs-6">
+    <button (click)="resetSearchCondition()" class="btn btn-default">
+      Reset Search Condition
+    </button>
+  </div>
+  <div class="col-xs-6 text-right form-inline">
+    <label>Items per page:</label>
+    <select class="form-control input-sm"
+      [(ngModel)]="currentPagePer"
+      (ngModelChange)="onChangePagePer($event)">
+      <option *ngFor="let per of selectablePers" [value]="per">
+        {{per}}
+      </option>
+    </select>
+  </div>
+  </div>
+  </div>
+
+  <div class="row">
   <div class="col-xs-12">
     <search-table #searchTable [tableClass]="'table table-condensed table-responsive table-hover'"
-                  [columns]="headerComponents" [config]="{url: 'http://localhost:3000/inventories/'}">
+                  [columns]="headerComponents" [config]="searchTableConfig">
       <tr *ngFor="let row of searchTable.dataRows">
         <td>{{row.id}}</td>
         <td>
@@ -39,65 +63,90 @@ import {FromToTextFilterComponent} from "ng2-search-table/components/table-filte
       [hideOnSinglePage]="false">
     </paginator>
   </div>
+  </div>
 
-  </div></div>
+  </div>
   `
 })
 export class AppComponent implements OnInit {
   @ViewChild(SearchTableComponent) searchTable: SearchTableComponent;
 
-  headerComponents: any;
+  private DEFAULT_PAGE_PER: number = 10;
+
+  selectablePers: any = [10, 20, 50, 100];
+  currentPagePer: number = this.DEFAULT_PAGE_PER;
+
+  searchTableConfig: any = {
+    url: "http://localhost:3000/inventories",
+    defaultPagePer: this.DEFAULT_PAGE_PER
+  };
+  headerComponents: any = [
+    {
+      name: "id",
+      model: {displayName: "Id"},
+      headerComponent: SortableHeaderComponent,
+      filterComponent: TextFilterComponent
+    },
+    {
+      name: "status",
+      model: {
+        displayName: "Status",
+        selectValues: [
+          { },
+          { id: "inactive", name: "Inactive" },
+          { id: "active", name: "Active" }
+        ]
+      },
+      headerComponent: SortableHeaderComponent,
+      filterComponent: SelectFilterComponent
+    },
+    {
+      name: "name",
+      model: {displayName: "Name"},
+      headerComponent: SortableHeaderComponent,
+      filterComponent: TextFilterComponent
+    },
+    {
+      name: "price",
+      model: {
+        displayName: "Price",
+        multipleFilter: [
+          {
+            name: "priceFrom",
+            placeholder: "From"
+          },
+          {
+            name: "priceTo",
+            placeholder: "To"
+          }
+        ]
+      },
+      headerComponent: SimpleHeaderComponent,
+      filterComponent: FromToTextFilterComponent
+    },
+  ];
 
   ngOnInit() {
-    this.headerComponents = [
-      {
-        name: "id",
-        model: {displayName: "Id"},
-        headerComponent: SortableHeaderComponent,
-        filterComponent: TextFilterComponent
-      },
-      {
-        name: "status",
-        model: {
-          displayName: "Status",
-          selectValues: [
-            { },
-            { id: "inactive", name: "Inactive" },
-            { id: "active", name: "Active" }
-          ]
-        },
-        headerComponent: SortableHeaderComponent,
-        filterComponent: SelectFilterComponent
-      },
-      {
-        name: "name",
-        model: {displayName: "Name"},
-        headerComponent: SortableHeaderComponent,
-        filterComponent: TextFilterComponent
-      },
-      {
-        name: "price",
-        model: {
-          displayName: "Price",
-          multipleFilter: [
-            {
-              name: "priceFrom",
-              placeholder: "From"
-            },
-            {
-              name: "priceTo",
-              placeholder: "To"
-            }
-          ]
-        },
-        headerComponent: SimpleHeaderComponent,
-        filterComponent: FromToTextFilterComponent
-      },
-    ];
+    this.searchTable.setSortDirection("id", "asc");
+  }
+
+  onChangePagePer(per: number) {
+    this.searchTable.setPagePer(per);
+    console.log("change page per to " + per);
   }
 
   onPageChange(currentPage: number): void {
     this.searchTable.setCurrentPage(currentPage);
     console.log("current page " + currentPage);
+  }
+
+  resetSearchCondition(): void {
+    this.searchTable.setSortDirection("id", "asc");
+    this.searchTable.setFilterValue("id", "");
+    this.searchTable.setFilterValue("status", "");
+    this.searchTable.setFilterValue("name", "");
+    this.searchTable.setFilterValue("price", "", "priceFrom");
+    this.searchTable.setFilterValue("price", "", "priceTo");
+    this.searchTable.search();
   }
 }

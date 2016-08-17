@@ -41,7 +41,9 @@ module Ng2SearchTableSearchable
 
     def ransack_sort_attributes(sort_attributes)
       return {} unless sort_attributes.present?
-      sort_attributes.map { |k, v| "#{k} #{v}" }
+      permitted_attributes = self.const_get(:RANSACK_FILTER_ATTRIBUTES).map { |k, _| k }
+
+      sort_attributes.permit(permitted_attributes).to_h.map { |k, v| "#{k} #{v}" }
     end
   end
 end
