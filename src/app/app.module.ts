@@ -11,7 +11,7 @@ import {Ng2SearchTableModule} from "ng2-search-table/ng2-search-table";
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
-    Ng2SearchTableModule.forRoot()
+    Ng2SearchTableModule.forRoot(),
   ],
   declarations: [
     AppComponent
