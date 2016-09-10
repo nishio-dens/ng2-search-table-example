@@ -1,5 +1,4 @@
 import {OnInit, Component, ViewChild} from "@angular/core";
-import {Paginator} from "ng2-paginator";
 import {SearchTableComponent} from "ng2-search-table/ng2-search-table";
 import {SimpleHeaderComponent} from "ng2-search-table/ng2-search-table";
 import {SortableHeaderComponent} from "ng2-search-table/ng2-search-table";
@@ -10,7 +9,6 @@ import {FromToTextFilterComponent} from "ng2-search-table/ng2-search-table";
 @Component({
   moduleId: module.id,
   selector: "app-root",
-  directives: [Paginator], // FIXME: deprecated
   template: `
   <div class="container">
   <h3>SimpleSearchTable Example</h3>
@@ -74,16 +72,6 @@ import {FromToTextFilterComponent} from "ng2-search-table/ng2-search-table";
       </tr>
     </search-table>
 
-    <paginator [total]="searchTable.getTotalCount()"
-      [onPage]="searchTable.getPagePer()"
-      [currentPage]="searchTable.getCurrentPage()"
-      [maxVisible]="5"
-      (onChange)="onPageChange($event)"
-      [directionLinks]="true"
-      directionNextLabel="Next" directionPreviousLabel="Prev"
-      [boundaryLinks]="true" boundaryFirstLabel="First" boundaryLastLabel="Last"
-      [hideOnSinglePage]="false">
-    </paginator>
   </div>
   </div>
 
