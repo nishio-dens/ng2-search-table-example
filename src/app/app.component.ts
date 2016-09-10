@@ -10,7 +10,6 @@ import {FromToTextFilterComponent} from "ng2-search-table/ng2-search-table";
 @Component({
   moduleId: module.id,
   selector: "app-root",
-  directives: [Paginator], // FIXME: deprecated
   template: `
   <div class="container">
   <h3>SimpleSearchTable Example</h3>
